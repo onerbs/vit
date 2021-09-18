@@ -58,6 +58,11 @@ pub fn (mut self Remote) revive() ? {
 	}
 }
 
+// get_branch shorcut for retrieving the current branch.
+fn (self Remote) get_branch() ?string {
+	return self.repo.current_branch()
+}
+
 // ---------------------------------------------------------
 
 // add_remote append a remote to this repository.

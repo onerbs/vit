@@ -55,3 +55,8 @@ pub fn (self Repository) get_author() ?string {
 	}
 	return res
 }
+
+// status return the repository status.
+pub fn (self Repository) status() ?string {
+	return self.exec('status')
+}

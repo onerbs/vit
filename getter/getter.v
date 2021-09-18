@@ -14,12 +14,12 @@ mut:
 // new create a helper for cloning repositories.
 pub fn new(cfg Getter) ?Getter {
 	if cfg.target.len > 0 && os.exists(cfg.target) {
-		mut target := str.brace(cfg.target, '"')
-		target = term.colorize(term.bold, target)
+		mut target := str.quote(cfg.target)
+		target = uwu.colorize(target, term.bold)
 		ups.raise('cannot clone into $target: already exists') ?
 	}
 	target := str.safe_quote(os.real_path(cfg.target))
-	return Getter{target, branch}
+	return Getter{target, cfg.branch}
 }
 
 // set_target change the target directory for the cloned repository.

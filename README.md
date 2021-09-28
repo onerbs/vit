@@ -5,7 +5,7 @@ Another Git wrapper
 
 ## Installation
 
-> This module depends on [`uwu`](https://github.com/onerbs/uwu/tree/dev)
+> This module depends on [`uwu`](https://github.com/onerbs/uwu)
 
 
 Clone this repository in your V modules folder:

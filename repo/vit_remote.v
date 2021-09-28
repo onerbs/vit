@@ -4,20 +4,11 @@ import uwu.ups
 import uwu.str
 
 pub struct Remote {
-	repo  Repository [required]
+	repo &Repository [required]
 mut:
-	alive bool = true
-	name string
-	url  string
-}
-
-fn new_remote(repo Repository, line string) Remote {
-	parts := str.words(line)
-	return Remote{
-		repo: repo
-		name: parts[0]
-		url: parts[1]
-	}
+	alive bool
+	name  string
+	url   string
 }
 
 // get_name return the name of this remote.
@@ -37,9 +28,9 @@ pub fn (mut self Remote) set_url(url string) ? {
 }
 
 // rename update the name of this remote.
-pub fn (mut self Remote) rename(new string) ? {
-	self.repo.exec('remote rename $self.name $new') ?
-	self.name = new
+pub fn (mut self Remote) rename(new_name string) ? {
+	self.repo.exec('remote rename $self.name $new_name') ?
+	self.name = new_name
 }
 
 // remove delete this remote from the repository.
@@ -58,26 +49,23 @@ pub fn (mut self Remote) revive() ? {
 	}
 }
 
-// get_branch shorcut for retrieving the current branch.
-fn (self Remote) get_branch() ?string {
-	return self.repo.current_branch()
-}
-
 // ---------------------------------------------------------
 
-// add_remote append a remote to this repository.
-pub fn (self Repository) add_remote(name string, url string) ?Remote {
+// new_remote append a remote to this repository.
+pub fn (self Repository) new_remote(name string, url string) ?Remote {
 	self.exec('remote add $name $url') ?
-	return self.get_remote(name)
+	return self.remote(name, url)
 }
 
-// get_remotes return a list of remotes in this repository.
-pub fn (self Repository) get_remotes() ?[]Remote {
-	lines := self.exec('remote -v') ?.split_into_lines()
-	mut res := []Remote{cap: 4}
+// list_remotes return a list of remotes in the repository.
+[direct_array_access]
+pub fn (self Repository) list_remotes() map[string]string {
+	lines := self.get('remote -v').split_into_lines()
+	mut res := map[string]string{}
 	for line in lines {
-		if line.ends_with('(push)') {
-			res << new_remote(self, line)
+		parts := str.words(line)
+		if parts.len > 1 {
+			res[parts[0]] = parts[1]
 		}
 	}
 	return res
@@ -85,11 +73,22 @@ pub fn (self Repository) get_remotes() ?[]Remote {
 
 // get_remote return the remote with the specified name.
 pub fn (self Repository) get_remote(name string) ?Remote {
-	for remote in self.get_remotes() ? {
-		if remote.name == name {
-			return remote
-		}
+	url := self.list_remotes()[name] or { '' }
+	if url.len < 1 {
+		ups.unknown('remote', name) ?
 	}
-	ups.unknown('remote', name) ?
-	return none
+	return self.remote(name, url)
+}
+
+// get_remotes return a list of remotes in the repository.
+pub fn (self Repository) get_remotes() []Remote {
+	mut res := []Remote{}
+	for name, url in self.list_remotes() {
+		res << self.remote(name, url)
+	}
+	return res
+}
+
+fn (repo Repository) remote(name string, url string) Remote {
+	return Remote{&repo, true, name, url}
 }

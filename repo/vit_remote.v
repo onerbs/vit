@@ -49,6 +49,11 @@ pub fn (mut self Remote) revive() ? {
 	}
 }
 
+// delete_branch will delete the selected branch from the remote.
+pub fn (self Remote) delete_branch(name string) ? {
+	self.repo.exec('push $self.name --delete $name') ?
+}
+
 // ---------------------------------------------------------
 
 // new_remote append a remote to this repository.

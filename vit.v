@@ -2,18 +2,9 @@ module vit
 
 import uwu
 import term
-import os
 
 // absolute path to the `git` executable.
-const exe = init_git()
-
-fn init_git() string {
-	path := os.find_abs_path_of_executable('git') or {
-		eprintln('Error: The `git` executable was not found.')
-		exit(1)
-	}
-	return path
-}
+const exe = uwu.need_exe('git')
 
 // exec execute a command or throw an error.
 pub fn exec(cmd string) ? {

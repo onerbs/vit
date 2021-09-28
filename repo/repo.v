@@ -4,6 +4,7 @@ import vit
 import uwu.ups
 import os
 
+[heap]
 struct Repository {
 	root string
 }

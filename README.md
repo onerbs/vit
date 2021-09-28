@@ -27,8 +27,8 @@ fn main() {
 	repo.stage('LICENSE') ?             // `git add LICENSE`
 	repo.commit('Add LICENSE') ?        // `git commit -m "Add LICENSE"`
 
-	host := uri.github()                // See the available hosts on `uri/hosts.v`
-	url := host.ssh('sample')           // "git@github.com:user/sample.git"
+	host := uri.github('sample')        // See the available hosts on `uri/hosts.v`
+	url := host.ssh()                   // "git@github.com:user/sample.git"
 
 	                                    // `git remote add origin git@github.com:user/sample.git`
 	origin := repo.add_remote('origin', url) ?

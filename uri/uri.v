@@ -4,6 +4,7 @@ import vit.env
 
 struct Host {
 	name string [required]
+	repo string [required]
 mut:
 	user string = env.git_user
 }
@@ -24,21 +25,21 @@ pub fn (mut self Host) set_user(user string) {
 }
 
 // git returns the URI in git protocol
-pub fn (self Host) git(repo string) string {
-	return 'git://$self.name/$self.user/${repo}.git'
+pub fn (self Host) git() string {
+	return 'git://$self.name/$self.user/${self.repo}.git'
 }
 
 // http returns the URI in HTTP protocol
-pub fn (self Host) http(repo string) string {
-	return 'http://$self.name/$self.user/$repo'
+pub fn (self Host) http() string {
+	return 'http://$self.name/$self.user/$self.repo'
 }
 
 // https returns the URI in HTTPS protocol
-pub fn (self Host) https(repo string) string {
-	return 'https://$self.name/$self.user/$repo'
+pub fn (self Host) https() string {
+	return 'https://$self.name/$self.user/$self.repo'
 }
 
 // ssh returns the URI in ssh protocol
-pub fn (self Host) ssh(repo string) string {
-	return 'git@$self.name:$self.user/${repo}.git'
+pub fn (self Host) ssh() string {
+	return 'git@$self.name:$self.user/${self.repo}.git'
 }

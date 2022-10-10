@@ -20,6 +20,21 @@ pub fn gitlab(repo string) Host {
 	return new_host(name: 'gitlab.com', repo: repo)
 }
 
+// pagure create a new URL maker with the Pagure host.
+pub fn pagure(repo string) Host {
+	return new_host(name: 'pagure.io', repo: repo)
+}
+
+// radicle create a new URL maker with the Radicle host.
+pub fn radicle(repo string) Host {
+	return new_host(name: 'radicle.xyz', repo: repo)
+}
+
+// savannah_gnu create a new URL maker with the SavannahGnu host.
+pub fn savannah_gnu(repo string) Host {
+	return new_host(name: 'savannah.gnu.org', repo: repo)
+}
+
 // sourcehut create a new URL maker with the SourceHut host.
 pub fn sourcehut(repo string) Host {
 	return new_host(name: 'git.sr.ht', repo: repo)

@@ -15,6 +15,11 @@ pub fn github(repo string) Host {
 	return new_host(name: 'github.com', repo: repo)
 }
 
+// sourcehut create a new URL maker with the SourceHut host.
+pub fn sourcehut(repo string) Host {
+	return new_host(name: 'sourcehut.org', repo: repo)
+}
+
 // gitlab create a new URL maker with the GitLab host.
 pub fn gitlab(repo string) Host {
 	return new_host(name: 'gitlab.com', repo: repo)
